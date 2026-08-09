@@ -54,6 +54,12 @@ render, parameter, and export instructions.
 Artifact-specific render tools live beside their source because algorithms and
 parameter presets differ between pieces.
 
+## Support the project
+
+If these artifacts, explanations, or reusable implementations are useful to
+you, you can support continued work at
+[Buy Me a Coffee](https://buymeacoffee.com/vollero).
+
 ## Licensing
 
 Unless a file says otherwise, source code is licensed under the MIT License.
