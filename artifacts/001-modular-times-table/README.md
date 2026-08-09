@@ -66,6 +66,11 @@ a `Release` subdirectory. Run the test suite with `ctest --test-dir build`.
 | `--line-alpha` | real, 0–1 | 0.16 | Controls accumulation, contrast, and glow-like density. | Balance against point count and line width. |
 | `--background` | SVG/CSS color | `#080b14` | Sets the field color. | Contrast with foreground affects perceived density. |
 | `--foreground` | SVG/CSS color | `#70e1f5` | Sets every chord color. | Opacity blends it into the background. |
+| `--accent` | SVG/CSS color | `#ffd166` | Highlights the selected construction chord. | Used with `--highlight`. |
+| `--chords` | integer, 0–point count | all | Reveals the construction progressively. | The highlighted index must already be visible to appear. |
+| `--highlight` | integer point index | none | Accents one source-to-destination mapping. | Best combined with low point counts. |
+| `--show-points` | flag | off | Adds markers at each discrete position. | Intended for explanatory renders. |
+| `--show-labels` | flag; ≤200 points | off | Adds numeric indices around the circle. | Large labels need adequate radius/canvas margin. |
 | `--output` | path | `modular-times-table.svg` | Chooses the SVG destination. | Parent directories are created automatically. |
 
 ## Presets and reproduction
@@ -96,6 +101,7 @@ FFmpeg and FFprobe. Build the renderer first, then run:
 
 # Render the 8-second, 1080 × 1920, 30 fps vertical animation master.
 ./artifacts/001-modular-times-table/scripts/render-animation.sh
+
 ```
 
 Both scripts accept options through `--help`. The animation moves from

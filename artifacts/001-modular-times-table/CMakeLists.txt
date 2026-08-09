@@ -26,4 +26,19 @@ if(BUILD_TESTING)
   set_tests_properties(artifact_001_rejects_too_few_points PROPERTIES
     WILL_FAIL TRUE
   )
+
+  add_test(
+    NAME artifact_001_construction_layer
+    COMMAND modular_times_table
+      --output ${CMAKE_CURRENT_BINARY_DIR}/artifact-001-construction.svg
+      --points 20
+      --multiplier 2
+      --chords 7
+      --highlight 6
+      --show-points
+      --show-labels
+  )
+  set_tests_properties(artifact_001_construction_layer PROPERTIES
+    PASS_REGULAR_EXPRESSION "Rendered 7 chords"
+  )
 endif()

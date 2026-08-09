@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <charconv>
 #include <cmath>
 #include <cstddef>
@@ -27,6 +28,11 @@ struct Options {
   double line_alpha{0.16};
   std::string background{"#080b14"};
   std::string foreground{"#70e1f5"};
+  std::string accent{"#ffd166"};
+  int visible_chords{-1};
+  int highlight{-1};
+  bool show_points{false};
+  bool show_labels{false};
 };
 
 [[noreturn]] void fail(const std::string& message) {
@@ -72,6 +78,11 @@ Options:
   --line-alpha A         Chord opacity, 0..1 (default: 0.16)
   --background COLOR     SVG/CSS background color (default: #080b14)
   --foreground COLOR     SVG/CSS chord color (default: #70e1f5)
+  --accent COLOR         Current-chord color (default: #ffd166)
+  --chords N             Draw only the first N chords (default: all)
+  --highlight INDEX      Accent one source chord (default: none)
+  --show-points          Draw point markers around the circle
+  --show-labels          Draw numeric point labels (at most 200 points)
   --help                 Show this message
 )";
 }
@@ -106,6 +117,18 @@ Options parse_options(int argc, char** argv) {
       options.background = next_value(index, argc, argv);
     } else if (argument == "--foreground") {
       options.foreground = next_value(index, argc, argv);
+    } else if (argument == "--accent") {
+      options.accent = next_value(index, argc, argv);
+    } else if (argument == "--chords") {
+      options.visible_chords =
+          parse_number<int>(next_value(index, argc, argv), argument);
+    } else if (argument == "--highlight") {
+      options.highlight =
+          parse_number<int>(next_value(index, argc, argv), argument);
+    } else if (argument == "--show-points") {
+      options.show_points = true;
+    } else if (argument == "--show-labels") {
+      options.show_labels = true;
     } else {
       fail("Unknown option: " + std::string(argument));
     }
@@ -137,6 +160,15 @@ void validate(const Options& options) {
   }
   if (options.output.empty()) {
     fail("--output must not be empty");
+  }
+  if (options.visible_chords < -1 || options.visible_chords > options.points) {
+    fail("--chords must be between 0 and --points");
+  }
+  if (options.highlight < -1 || options.highlight >= options.points) {
+    fail("--highlight must identify a source point or be omitted");
+  }
+  if (options.show_labels && options.points > 200) {
+    fail("--show-labels supports at most 200 points to keep labels legible");
   }
 }
 
@@ -185,6 +217,9 @@ void render(const Options& options) {
   const double radius = static_cast<double>(std::min(options.width, options.height)) *
                         options.radius;
 
+  const int chord_count = options.visible_chords < 0
+                              ? options.points
+                              : options.visible_chords;
   output << std::fixed << std::setprecision(3);
   output << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
          << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\""
@@ -200,7 +235,7 @@ void render(const Options& options) {
          << "\" stroke-opacity=\"" << options.line_alpha
          << "\" stroke-linecap=\"round\">\n";
 
-  for (int source_index = 0; source_index < options.points; ++source_index) {
+  for (int source_index = 0; source_index < chord_count; ++source_index) {
     const double destination_index =
         std::fmod(options.multiplier * static_cast<double>(source_index),
                   static_cast<double>(options.points));
@@ -208,12 +243,50 @@ void render(const Options& options) {
                                          center_y, radius);
     const Point destination = point_on_circle(destination_index, options.points,
                                               center_x, center_y, radius);
+    if (source_index == options.highlight) {
+      output << "    <line stroke=\"" << xml_escape(options.accent)
+             << "\" stroke-opacity=\"1\" stroke-width=\""
+             << options.line_width * 3.0 << "\" x1=\"" << source.x
+             << "\" y1=\"" << source.y << "\" x2=\"" << destination.x
+             << "\" y2=\"" << destination.y << "\"/>\n";
+      continue;
+    }
     output << "    <line x1=\"" << source.x << "\" y1=\"" << source.y
            << "\" x2=\"" << destination.x << "\" y2=\"" << destination.y
            << "\"/>\n";
   }
 
-  output << "  </g>\n</svg>\n";
+  output << "  </g>\n";
+
+  if (options.show_points || options.show_labels) {
+    const double marker_radius =
+        std::max(2.5, static_cast<double>(std::min(options.width, options.height)) /
+                          360.0);
+    const double label_radius = radius + marker_radius * 5.0;
+    const double label_size =
+        std::max(12.0, static_cast<double>(std::min(options.width, options.height)) /
+                           45.0);
+    output << "  <g fill=\"" << xml_escape(options.foreground) << "\">\n";
+    for (int index = 0; index < options.points; ++index) {
+      const Point point = point_on_circle(index, options.points, center_x,
+                                          center_y, radius);
+      if (options.show_points) {
+        output << "    <circle cx=\"" << point.x << "\" cy=\"" << point.y
+               << "\" r=\"" << marker_radius << "\"/>\n";
+      }
+      if (options.show_labels) {
+        const Point label = point_on_circle(index, options.points, center_x,
+                                            center_y, label_radius);
+        output << "    <text x=\"" << label.x << "\" y=\"" << label.y
+               << "\" text-anchor=\"middle\" dominant-baseline=\"central\""
+               << " font-family=\"ui-monospace,monospace\" font-size=\""
+               << label_size << "\">" << index << "</text>\n";
+      }
+    }
+    output << "  </g>\n";
+  }
+
+  output << "</svg>\n";
   if (!output) {
     fail("Failed while writing output file: " + options.output.string());
   }
@@ -226,7 +299,10 @@ int main(int argc, char** argv) {
     const Options options = parse_options(argc, argv);
     validate(options);
     render(options);
-    std::cout << "Rendered " << options.points << " chords to "
+    const int chord_count = options.visible_chords < 0
+                                ? options.points
+                                : options.visible_chords;
+    std::cout << "Rendered " << chord_count << " chords to "
               << options.output << '\n';
     return EXIT_SUCCESS;
   } catch (const std::exception& error) {
