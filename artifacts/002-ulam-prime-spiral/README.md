@@ -63,6 +63,8 @@ Run the full test suite with `ctest --test-dir build`.
 | `--prime-color` | SVG/CSS color | `#f4d35e` | Sets the marked-prime color. | High contrast makes sparse diagonal tracks easier to perceive. |
 | `--composite-color` | SVG/CSS color | `#27324a` | Sets contextual non-prime points. | Visible only when composite alpha is above zero. |
 | `--composite-alpha` | real, 0–1 | 0 | Reveals the full traversal/lattice. | Low values teach the construction; high values reduce prime contrast. |
+| `--cells` | integer, 0–side² | 0 (all) | Reveals the spiral in integer order instead of drawing the complete grid. | Combine with labels at low side lengths to explain the traversal. |
+| `--show-values` | flag; side ≤51 | off | Prints each visible integer at its grid position. | Intended for explanatory renders; dense grids become unreadable. |
 | `--output` | path | `ulam-prime-spiral.svg` | Chooses the SVG destination. | Parent directories are created automatically. |
 
 ## Preset and reproduction
@@ -78,6 +80,7 @@ inputs.
 ## Experiments
 
 - Start with side `21` and composite alpha `0.12` to see the number placement.
+- Add `--cells 25 --show-values` to expose the first complete square shell.
 - Increase the side through `101`, `501`, and `1001` while keeping the canvas
   fixed; observe when individual primes become diagonal textures.
 - Compare center values `1` and `41` at the same side length.

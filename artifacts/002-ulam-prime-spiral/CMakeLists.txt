@@ -23,4 +23,17 @@ if(BUILD_TESTING)
   add_test(NAME artifact_002_rejects_even_side
     COMMAND ulam_prime_spiral --side 100)
   set_tests_properties(artifact_002_rejects_even_side PROPERTIES WILL_FAIL TRUE)
+
+  add_test(
+    NAME artifact_002_labeled_construction
+    COMMAND ulam_prime_spiral
+      --output ${CMAKE_CURRENT_BINARY_DIR}/artifact-002-labeled.svg
+      --side 21
+      --cells 25
+      --show-values
+      --composite-alpha 0.12
+  )
+  set_tests_properties(artifact_002_labeled_construction PROPERTIES
+    PASS_REGULAR_EXPRESSION "Rendered 9 primes from 1 to 25"
+  )
 endif()

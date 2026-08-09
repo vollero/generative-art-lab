@@ -29,6 +29,8 @@ struct Options {
   std::string prime_color{"#f4d35e"};
   std::string composite_color{"#27324a"};
   double composite_alpha{0.0};
+  std::uint64_t visible_cells{0};
+  bool show_values{false};
 };
 
 [[noreturn]] void fail(const std::string& message) {
@@ -74,6 +76,8 @@ Options:
   --prime-color COLOR      Prime point color (default: #f4d35e)
   --composite-color COLOR  Composite point color (default: #27324a)
   --composite-alpha A      Composite opacity, 0..1 (default: 0)
+  --cells N                Draw first N cells, 0 means all (default: 0)
+  --show-values            Label integers; supported up to side 51
   --help                   Show this message
 )";
 }
@@ -111,6 +115,11 @@ Options parse_options(int argc, char** argv) {
     } else if (argument == "--composite-alpha") {
       options.composite_alpha =
           parse_number<double>(next_value(index, argc, argv), argument);
+    } else if (argument == "--cells") {
+      options.visible_cells = parse_number<std::uint64_t>(
+          next_value(index, argc, argv), argument);
+    } else if (argument == "--show-values") {
+      options.show_values = true;
     } else {
       fail("Unknown option: " + std::string(argument));
     }
@@ -143,6 +152,14 @@ void validate(const Options& options) {
   }
   if (options.output.empty()) {
     fail("--output must not be empty");
+  }
+  const std::uint64_t cell_count = static_cast<std::uint64_t>(options.side) *
+                                   static_cast<std::uint64_t>(options.side);
+  if (options.visible_cells > cell_count) {
+    fail("--cells must be 0 or no greater than side squared");
+  }
+  if (options.show_values && options.side > 51) {
+    fail("--show-values supports side lengths no greater than 51");
   }
 }
 
@@ -218,6 +235,7 @@ void render(const Options& options) {
   const double extent = shorter * (1.0 - options.margin * 2.0);
   const double cell = extent / static_cast<double>(options.side);
   const double radius = cell * options.radius;
+  const double label_size = cell * 0.38;
   const double center_x = static_cast<double>(options.width) / 2.0;
   const double center_y = static_cast<double>(options.height) / 2.0;
 
@@ -232,9 +250,12 @@ void render(const Options& options) {
          << "  <rect width=\"100%\" height=\"100%\" fill=\""
          << xml_escape(options.background) << "\"/>\n";
 
+  const std::size_t visible_count = options.visible_cells == 0
+                                        ? cell_count
+                                        : static_cast<std::size_t>(options.visible_cells);
   SpiralCursor cursor;
   std::size_t prime_count = 0;
-  for (std::size_t index = 0; index < cell_count; ++index) {
+  for (std::size_t index = 0; index < visible_count; ++index) {
     const std::size_t value = static_cast<std::size_t>(options.start + index);
     const bool is_prime = primes[value];
     if (is_prime) ++prime_count;
@@ -248,12 +269,23 @@ void render(const Options& options) {
       if (!is_prime) output << " fill-opacity=\"" << options.composite_alpha << "\"";
       output << "/>\n";
     }
+    if (options.show_values) {
+      const double x = center_x + static_cast<double>(cursor.x) * cell;
+      const double y = center_y + static_cast<double>(cursor.y) * cell;
+      output << "  <text x=\"" << x << "\" y=\"" << y
+             << "\" fill=\""
+             << xml_escape(is_prime ? options.prime_color : options.composite_color)
+             << "\" text-anchor=\"middle\" dominant-baseline=\"central\""
+             << " font-family=\"ui-monospace,monospace\" font-size=\""
+             << label_size << "\">" << value << "</text>\n";
+    }
     cursor.advance();
   }
   output << "</svg>\n";
   if (!output) fail("Failed while writing output file: " + options.output.string());
+  const std::uint64_t visible_final = options.start + visible_count - 1;
   std::cout << "Rendered " << prime_count << " primes from " << options.start
-            << " to " << final_value << " into " << options.output << '\n';
+            << " to " << visible_final << " into " << options.output << '\n';
 }
 
 }  // namespace
