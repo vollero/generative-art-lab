@@ -14,4 +14,3 @@ For every featured render, record:
 | Output dimensions | 2160 × 2160 SVG master |
 | Derived media | pending |
 | Published URLs | pending |
-

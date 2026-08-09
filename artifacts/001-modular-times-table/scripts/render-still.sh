@@ -56,4 +56,3 @@ rsvg-convert \
 
 echo "Rendered still master: ${svg_output}"
 echo "Rendered PNG derivative: ${png_output}"
-

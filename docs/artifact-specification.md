@@ -55,4 +55,3 @@ Use this format in every artifact README:
 Keep thumbnails and a few compressed reference images in Git. Publish large
 lossless renders and videos as GitHub Release assets or through the relevant
 media platform. Never commit licensed music unless redistribution is allowed.
-
