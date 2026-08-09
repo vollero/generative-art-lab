@@ -1,0 +1,9 @@
+build/
+out/
+renders/
+.cache/
+.DS_Store
+*.mp4
+*.mov
+*.webm
+

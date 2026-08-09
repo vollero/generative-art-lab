@@ -1,0 +1,16 @@
+{
+  "artifact": "001-modular-times-table",
+  "preset": "featured",
+  "output": "out/001-featured.svg",
+  "points": 720,
+  "multiplier": 2.0,
+  "width": 2160,
+  "height": 2160,
+  "radius": 0.46,
+  "line_width": 0.65,
+  "line_alpha": 0.12,
+  "background": "#080b14",
+  "foreground": "#70e1f5",
+  "seed": null
+}
+
