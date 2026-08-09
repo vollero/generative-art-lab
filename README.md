@@ -28,6 +28,7 @@ The collection is organized by mathematical and computational theme:
 | ID | Artwork | Theme | Status |
 | --- | --- | --- | --- |
 | 001 | [Modular Times Table](artifacts/001-modular-times-table/) | Number theory | Available |
+| 002 | [Ulam Prime Spiral](artifacts/002-ulam-prime-spiral/) | Number theory | In development |
 
 ## Repository layout
 

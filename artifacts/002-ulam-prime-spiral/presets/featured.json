@@ -1,0 +1,16 @@
+{
+  "artifact": "002-ulam-prime-spiral",
+  "preset": "featured",
+  "output": "out/002-featured.svg",
+  "side": 501,
+  "start": 1,
+  "width": 2160,
+  "height": 2160,
+  "margin": 0.045,
+  "radius": 0.42,
+  "background": "#070912",
+  "prime_color": "#f4d35e",
+  "composite_color": "#27324a",
+  "composite_alpha": 0.0,
+  "seed": null
+}
