@@ -8,12 +8,11 @@ Each artwork in this repository includes:
 - an explanation of the algorithm and its artistic idea;
 - a parameter guide describing visible effects;
 - deterministic seeds or other reproduction inputs;
-- export instructions for still images and social video;
-- links to the videos in which the artwork appears.
+- instructions for rendering still images or algorithmic animation.
 
 ## Start here
 
-The collection is organized by theme rather than by social platform:
+The collection is organized by mathematical and computational theme:
 
 | Theme | Examples |
 | --- | --- |
@@ -22,30 +21,23 @@ The collection is organized by theme rather than by social platform:
 | Simulation | particles, reaction-diffusion, cellular automata, fluids |
 | Signals | oscillators, Fourier drawing, harmonographs, interference |
 | Chance and emergence | random walks, noise fields, stochastic growth |
-| Image and video | feedback, pixel sorting, slit scan, motion studies |
+| Image processing | feedback, pixel sorting, slit scan, motion studies |
 
 ## Artifacts
 
 | ID | Artwork | Theme | Status |
 | --- | --- | --- | --- |
-| 001 | [Modular Times Table](artifacts/001-modular-times-table/) | Number theory | In production |
-
-See the [artifact specification](docs/artifact-specification.md) for the common
-format.
+| 001 | [Modular Times Table](artifacts/001-modular-times-table/) | Number theory | Available |
 
 ## Repository layout
 
 ```text
 artifacts/<id>/       one self-contained artwork
-common/               small reusable C/C++ utilities
-docs/                 project-wide explanations and contributor guidance
-scripts/              build, render, and validation helpers
 third_party/          dependency notices or vendored, permitted dependencies
 ```
 
-Every artifact owns its documentation, presets, source, and generated-media
-manifest. Large rendered images and videos are releases or external media, not
-ordinary Git objects.
+Every artifact owns its explanation, parameter guide, presets, source code,
+tests, and generic render helpers.
 
 ## Build philosophy
 
@@ -59,15 +51,11 @@ ordinary Git objects.
 Artifact 001 is the first runnable example; its README contains the tested build,
 render, parameter, and export instructions.
 
-Artifact-specific export tools live beside their source because presets and
-media requirements can differ between pieces.
+Artifact-specific render tools live beside their source because algorithms and
+parameter presets differ between pieces.
 
 ## Licensing
 
 Unless a file says otherwise, source code is licensed under the MIT License.
-Written explanations and original rendered media are licensed under
-CC BY 4.0. Third-party assets retain their own licenses; see their notices.
-
-## Follow the project
-
-Video and social links will be listed here as the first artifacts are released.
+Written explanations and original rendered outputs are licensed under CC BY
+4.0. Third-party assets retain their own licenses; see their notices.

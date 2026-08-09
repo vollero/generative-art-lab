@@ -87,19 +87,19 @@ may vary slightly between renderers.
 
 ## Export and experiments
 
-SVG is the archival master for this line-based piece. Rasterize it with a
-color-managed SVG tool at the exact target resolution. For animation, render a
+SVG is the resolution-independent output for this line-based piece. Rasterize
+it at the exact resolution required by your experiment. For animation, render a
 sequence while incrementing `--multiplier`; encode that sequence separately so
 the mathematical renderer remains independent of a video codec.
 
-The export helpers require `rsvg-convert`; animation additionally requires
+The render helpers require `rsvg-convert`; animation additionally requires
 FFmpeg and FFprobe. Build the renderer first, then run:
 
 ```bash
 # Reproduce the featured SVG and a 2160 px PNG.
 ./artifacts/001-modular-times-table/scripts/render-still.sh
 
-# Render the 8-second, 1080 × 1920, 30 fps vertical animation master.
+# Render an 8-second, 1080 × 1920, 30 fps parameter animation.
 ./artifacts/001-modular-times-table/scripts/render-animation.sh
 
 ```
@@ -107,8 +107,8 @@ FFmpeg and FFprobe. Build the renderer first, then run:
 Both scripts accept options through `--help`. The animation moves from
 multiplier `1` to `6` with smoothstep easing, writes H.264 High Profile in an
 MP4 container, tags SDR output as BT.709, and moves the MP4 index to the front
-for progressive download. It intentionally contains no audio; narration and
-licensed sound belong to the editorial timeline, not the mathematical master.
+for progressive download. It intentionally contains no audio because this
+repository concerns the algorithm and its visible parameter behavior.
 
 For a quick pipeline test:
 
@@ -138,7 +138,3 @@ construction, also called a residue design or multiplication-circle design.
 
 The code and visual treatment here are original to this repository; the
 underlying mathematical construction is established prior work.
-
-## Published media
-
-Not yet published.
