@@ -2,58 +2,67 @@
 
 Reproducible generative and algorithmic artworks built with C and C++.
 
-Each artwork in this repository includes:
+This public repository contains only the material needed to understand and
+reproduce each artifact:
 
-- source code and exact build/run instructions;
-- an explanation of the algorithm and its artistic idea;
-- a parameter guide describing visible effects;
-- deterministic seeds or other reproduction inputs;
-- instructions for rendering still images or algorithmic animation.
+- source code and portable build instructions;
+- the mathematical or computational principle;
+- deterministic featured presets;
+- rendering instructions;
+- parameter descriptions and their visible effects;
+- tests, references, and licensing notes.
 
-## Start here
+Social editing, narration, captions, scheduling, analytics, and other
+production-management material are intentionally not stored here.
 
-The collection is organized by mathematical and computational theme:
+## Published artifacts
 
-| Theme | Examples |
-| --- | --- |
-| Number theory | prime spirals, modular multiplication, divisor fields |
-| Geometry | tilings, circle packing, Voronoi systems, curve families |
-| Simulation | particles, reaction-diffusion, cellular automata, fluids |
-| Signals | oscillators, Fourier drawing, harmonographs, interference |
-| Chance and emergence | random walks, noise fields, stochastic growth |
-| Image processing | feedback, pixel sorting, slit scan, motion studies |
-
-## Artifacts
-
-| ID | Artwork | Theme | Status |
+| ID | Artwork | Principle | Release |
 | --- | --- | --- | --- |
-| 001 | [Modular Times Table](artifacts/001-modular-times-table/) | Number theory | Available |
-| 002 | [Ulam Prime Spiral](artifacts/002-ulam-prime-spiral/) | Number theory | In development |
+| 001 | [Modular Times Table](artifacts/001-modular-times-table/) | Modular multiplication turns straight chords into curved envelopes. | [`artifact-001-v1.0.0`](https://github.com/vollero/generative-art-lab/tree/artifact-001-v1.0.0/artifacts/001-modular-times-table) |
+| 002 | [Ulam Prime Spiral](artifacts/002-ulam-prime-spiral/) | Primes placed on a square integer spiral expose diagonal tracks. | [`artifact-002-v1.0.0`](https://github.com/vollero/generative-art-lab/tree/artifact-002-v1.0.0/artifacts/002-ulam-prime-spiral) |
+| 003 | [Divisor Field](artifacts/003-divisor-field/) | Divisor counts become brightness in a woven integer-grid texture. | [`artifact-003-v1.0.0`](https://github.com/vollero/generative-art-lab/tree/artifact-003-v1.0.0/artifacts/003-divisor-field) |
+
+The links in the artwork column follow the current branch. Release links are
+immutable reproduction targets.
+
+## Build everything
+
+Requirements: CMake 3.20+ and a C++20 compiler.
+
+```bash
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release
+ctest --test-dir build --output-on-failure
+```
+
+No graphics library is required for the core SVG renderers. Each artifact
+README provides its exact command, featured preset, parameter guide, and any
+optional raster/video export dependencies.
 
 ## Repository layout
 
 ```text
-artifacts/<id>/       one self-contained artwork
-third_party/          dependency notices or vendored, permitted dependencies
+artifacts/<id>/
+├── src/              C or C++ renderer
+├── presets/          deterministic reproduction inputs
+├── CMakeLists.txt    target and artifact tests
+├── README.md         principle, rendering, and parameter effects
+└── LICENSES.md       artifact-specific licensing notes
 ```
 
-Every artifact owns its explanation, parameter guide, presets, source code,
-tests, and generic render helpers.
+Some artifacts also contain generic render helpers under `scripts/`. Generated
+files belong in ignored `out/`, `renders/`, or `build/` directories.
 
-## Build philosophy
+## Design rules
 
-- C++20 is the default language; C is welcome where it makes the idea clearer.
-- CMake provides a portable build entry point.
-- Seeds and presets make outputs reproducible.
-- CPU implementations come first; GPU versions may be added when they teach
-  something useful or materially improve the work.
-- Dependencies are deliberately small and documented per artifact.
-
-Artifact 001 is the first runnable example; its README contains the tested build,
-render, parameter, and export instructions.
-
-Artifact-specific render tools live beside their source because algorithms and
-parameter presets differ between pieces.
+- C++20 is the default; C is welcome when it makes the idea clearer.
+- CPU implementations come first.
+- Renderers produce deterministic, inspectable output.
+- Presets record every input needed for a featured result.
+- Parameter documentation distinguishes arithmetic changes from purely visual
+  or layout changes.
+- Dependencies remain small and are documented where used.
 
 ## Support the project
 

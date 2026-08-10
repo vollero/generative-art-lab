@@ -2,6 +2,7 @@
 #include <cmath>
 #include <cstdint>
 #include <fstream>
+#include <filesystem>
 #include <iomanip>
 #include <iostream>
 #include <limits>
@@ -126,7 +127,10 @@ int main(int argc, char** argv) {
     const double x0 = (o.width - field_w) / 2.0;
     const double y0 = (o.height - field_h) / 2.0;
 
-    std::ofstream svg{o.output};
+    const std::filesystem::path output_path{o.output};
+    if (output_path.has_parent_path())
+      std::filesystem::create_directories(output_path.parent_path());
+    std::ofstream svg{output_path};
     if (!svg) throw std::runtime_error("cannot open output: " + o.output);
     svg << std::fixed << std::setprecision(3)
         << "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" << o.width
