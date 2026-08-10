@@ -34,6 +34,7 @@ seed is required.
 | `--ceiling` | auto | Fixes the divisor-count value mapped to maximum opacity. |
 | `--show-records` | off | Outlines each new divisor-count record in white. |
 | `--show-values` | off | Labels `n` and `d(n)` when at most 400 cells are rendered. |
+| `--highlight` | off | Outlines one in-range integer in cyan for explanation frames. |
 | `--background`, `--foreground` | dark/gold | Changes palette, not arithmetic selection. |
 
 `--columns` is perceptually powerful: it determines which integers share a

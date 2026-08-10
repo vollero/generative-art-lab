@@ -27,6 +27,7 @@ struct Options {
   std::string foreground{"#f6d35f"};
   bool show_records{false};
   bool show_values{false};
+  std::uint64_t highlight{0};
 };
 
 template <typename T> T number(std::string_view text, std::string_view name) {
@@ -67,10 +68,12 @@ Options parse(int argc, char** argv) {
     else if (arg == "--foreground") o.foreground = next();
     else if (arg == "--show-records") o.show_records = true;
     else if (arg == "--show-values") o.show_values = true;
+    else if (arg == "--highlight") o.highlight = number<std::uint64_t>(next(), "highlight");
     else if (arg == "--help") {
       std::cout << "divisor_field [--output FILE] [--start N] [--count N] [--columns N]\n"
                    "  [--width PX] [--height PX] [--margin PX] [--gap 0..0.9]\n"
-                   "  [--scale linear|sqrt|log] [--ceiling N] [--show-records] [--show-values]\n";
+                   "  [--scale linear|sqrt|log] [--ceiling N] [--show-records] [--show-values]\n"
+                   "  [--highlight N]\n";
       std::exit(0);
     } else throw std::runtime_error("unknown option: " + arg);
   }
@@ -81,6 +84,8 @@ Options parse(int argc, char** argv) {
   if (o.gap < 0.0 || o.gap >= 0.9) throw std::runtime_error("gap must be in [0, 0.9)");
   if (o.scale != "linear" && o.scale != "sqrt" && o.scale != "log") throw std::runtime_error("scale must be linear, sqrt, or log");
   if (o.show_values && o.count > 400) throw std::runtime_error("show-values requires count <= 400");
+  if (o.highlight != 0 && (o.highlight < o.start || o.highlight >= o.start + o.count))
+    throw std::runtime_error("highlight must be inside the rendered integer range");
   return o;
 }
 
@@ -158,6 +163,15 @@ int main(int argc, char** argv) {
         svg << "<rect x=\"" << item.x << "\" y=\"" << item.y << "\" width=\""
             << item.size << "\" height=\"" << item.size << "\"/>\n";
       svg << "</g>\n";
+    }
+    if (o.highlight != 0) {
+      const std::uint64_t index = o.highlight - o.start;
+      const double x = x0 + (index % o.columns) * cell + cell * o.gap * 0.5;
+      const double y = y0 + (index / o.columns) * cell + cell * o.gap * 0.5;
+      const double size = cell * (1.0 - o.gap);
+      svg << "<rect x=\"" << x << "\" y=\"" << y << "\" width=\"" << size
+          << "\" height=\"" << size << "\" fill=\"none\" stroke=\"#70e1f5\" stroke-width=\""
+          << std::max(1.0, cell * 0.14) << "\"/>\n";
     }
     if (o.show_values) {
       svg << "<g fill=\"#f3f5fa\" text-anchor=\"middle\" font-family=\"monospace\">\n";

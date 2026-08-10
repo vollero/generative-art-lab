@@ -29,4 +29,8 @@ if(BUILD_TESTING)
       --count 100 --columns 10 --show-values --show-records)
   set_tests_properties(artifact_003_labeled_construction PROPERTIES
     PASS_REGULAR_EXPRESSION "Rendered 100 integers; maximum divisor count 12 at 60")
+
+  add_test(NAME artifact_003_rejects_outside_highlight
+    COMMAND divisor_field --count 100 --highlight 101)
+  set_tests_properties(artifact_003_rejects_outside_highlight PROPERTIES WILL_FAIL TRUE)
 endif()
