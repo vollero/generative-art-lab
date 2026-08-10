@@ -23,4 +23,10 @@ if(BUILD_TESTING)
   add_test(NAME artifact_003_rejects_zero_columns
     COMMAND divisor_field --columns 0)
   set_tests_properties(artifact_003_rejects_zero_columns PROPERTIES WILL_FAIL TRUE)
+
+  add_test(NAME artifact_003_labeled_construction
+    COMMAND divisor_field --output ${CMAKE_CURRENT_BINARY_DIR}/artifact-003-labeled.svg
+      --count 100 --columns 10 --show-values --show-records)
+  set_tests_properties(artifact_003_labeled_construction PROPERTIES
+    PASS_REGULAR_EXPRESSION "Rendered 100 integers; maximum divisor count 12 at 60")
 endif()

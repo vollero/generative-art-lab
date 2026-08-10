@@ -12,7 +12,7 @@ cmake -S . -B build
 cmake --build build
 ./build/artifacts/003-divisor-field/divisor_field \
   --output out/003-divisor-field.svg \
-  --count 250000 --columns 500 --scale log --show-records
+  --count 250000 --columns 500 --scale sqrt --ceiling 168 --show-records
 ```
 
 The renderer uses a divisor-count sieve: each possible divisor increments all
@@ -30,14 +30,28 @@ seed is required.
 | `--width`, `--height` | `2160` | Set SVG canvas dimensions. |
 | `--margin` | `80` | Adds empty space around the field. |
 | `--gap` | `0.08` | Separates cells; values from `0` through less than `0.9`. |
-| `--scale` | `log` | `linear`, `sqrt`, or `log` contrast mapping. |
+| `--scale` | `sqrt` | `linear`, `sqrt`, or `log` contrast mapping. |
 | `--ceiling` | auto | Fixes the divisor-count value mapped to maximum opacity. |
 | `--show-records` | off | Outlines each new divisor-count record in white. |
+| `--show-values` | off | Labels `n` and `d(n)` when at most 400 cells are rendered. |
 | `--background`, `--foreground` | dark/gold | Changes palette, not arithmetic selection. |
 
 `--columns` is perceptually powerful: it determines which integers share a
 vertical alignment. Treat those alignments as a layout study, not evidence of a
 new theorem. Use a fixed `--ceiling` when comparing different ranges.
+
+The featured preset uses a 500×500 field, square-root contrast, and a fixed
+ceiling of 168. Linear mapping makes ordinary values very dark; logarithmic
+mapping lifts them enough to flatten the hierarchy. Square root is the selected
+balance, while all three remain available for experimentation.
+
+For a readable construction:
+
+```bash
+./build/artifacts/003-divisor-field/divisor_field \
+  --output out/003-construction.svg --count 100 --columns 10 \
+  --show-values --show-records
+```
 
 ## Mathematical principle
 

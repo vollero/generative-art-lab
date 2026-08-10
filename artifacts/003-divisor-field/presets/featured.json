@@ -1,0 +1,18 @@
+{
+  "artifact": "003-divisor-field",
+  "preset": "featured",
+  "output": "out/003-divisor-field.svg",
+  "start": 1,
+  "count": 250000,
+  "columns": 500,
+  "width": 2160,
+  "height": 2160,
+  "margin": 80,
+  "gap": 0.08,
+  "scale": "sqrt",
+  "ceiling": 168,
+  "background": "#080b14",
+  "foreground": "#f6d35f",
+  "show_records": true,
+  "seed": null
+}

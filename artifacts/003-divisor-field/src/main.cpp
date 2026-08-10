@@ -21,11 +21,12 @@ struct Options {
   int height{2160};
   double margin{80.0};
   double gap{0.08};
-  std::string scale{"log"};
+  std::string scale{"sqrt"};
   std::uint32_t ceiling{0};
   std::string background{"#080b14"};
   std::string foreground{"#f6d35f"};
   bool show_records{false};
+  bool show_values{false};
 };
 
 template <typename T> T number(std::string_view text, std::string_view name) {
@@ -65,10 +66,11 @@ Options parse(int argc, char** argv) {
     else if (arg == "--background") o.background = next();
     else if (arg == "--foreground") o.foreground = next();
     else if (arg == "--show-records") o.show_records = true;
+    else if (arg == "--show-values") o.show_values = true;
     else if (arg == "--help") {
       std::cout << "divisor_field [--output FILE] [--start N] [--count N] [--columns N]\n"
                    "  [--width PX] [--height PX] [--margin PX] [--gap 0..0.9]\n"
-                   "  [--scale linear|sqrt|log] [--ceiling N] [--show-records]\n";
+                   "  [--scale linear|sqrt|log] [--ceiling N] [--show-records] [--show-values]\n";
       std::exit(0);
     } else throw std::runtime_error("unknown option: " + arg);
   }
@@ -78,6 +80,7 @@ Options parse(int argc, char** argv) {
   if (o.width <= 0 || o.height <= 0 || o.margin < 0.0) throw std::runtime_error("invalid canvas geometry");
   if (o.gap < 0.0 || o.gap >= 0.9) throw std::runtime_error("gap must be in [0, 0.9)");
   if (o.scale != "linear" && o.scale != "sqrt" && o.scale != "log") throw std::runtime_error("scale must be linear, sqrt, or log");
+  if (o.show_values && o.count > 400) throw std::runtime_error("show-values requires count <= 400");
   return o;
 }
 
@@ -154,6 +157,19 @@ int main(int argc, char** argv) {
       for (const auto& item : records)
         svg << "<rect x=\"" << item.x << "\" y=\"" << item.y << "\" width=\""
             << item.size << "\" height=\"" << item.size << "\"/>\n";
+      svg << "</g>\n";
+    }
+    if (o.show_values) {
+      svg << "<g fill=\"#f3f5fa\" text-anchor=\"middle\" font-family=\"monospace\">\n";
+      for (std::uint64_t index = 0; index < o.count; ++index) {
+        const std::uint64_t n = o.start + index;
+        const double x = x0 + (index % o.columns) * cell + cell * 0.5;
+        const double y = y0 + (index / o.columns) * cell + cell * 0.43;
+        svg << "<text x=\"" << x << "\" y=\"" << y << "\" font-size=\""
+            << cell * 0.24 << "\">" << n << "</text>\n"
+            << "<text x=\"" << x << "\" y=\"" << y + cell * 0.25
+            << "\" font-size=\"" << cell * 0.18 << "\">d=" << counts[n] << "</text>\n";
+      }
       svg << "</g>\n";
     }
     svg << "</svg>\n";
