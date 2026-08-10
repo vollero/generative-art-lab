@@ -21,7 +21,7 @@ production-management material are intentionally not stored here.
 | --- | --- | --- | --- |
 | 001 | [Modular Times Table](artifacts/001-modular-times-table/) | Modular multiplication turns straight chords into curved envelopes. | [`artifact-001-v1.0.0`](https://github.com/vollero/generative-art-lab/tree/artifact-001-v1.0.0/artifacts/001-modular-times-table) |
 | 002 | [Ulam Prime Spiral](artifacts/002-ulam-prime-spiral/) | Primes placed on a square integer spiral expose diagonal tracks. | [`artifact-002-v1.0.0`](https://github.com/vollero/generative-art-lab/tree/artifact-002-v1.0.0/artifacts/002-ulam-prime-spiral) |
-| 003 | [Divisor Field](artifacts/003-divisor-field/) | Divisor counts become brightness in a woven integer-grid texture. | [`artifact-003-v1.0.0`](https://github.com/vollero/generative-art-lab/tree/artifact-003-v1.0.0/artifacts/003-divisor-field) |
+| 003 | [Divisor Field](artifacts/003-divisor-field/) | Divisor counts become brightness in a woven integer-grid texture. | [`artifact-003-v1.0.1`](https://github.com/vollero/generative-art-lab/tree/artifact-003-v1.0.1/artifacts/003-divisor-field) |
 
 The links in the artwork column follow the current branch. Release links are
 immutable reproduction targets.
