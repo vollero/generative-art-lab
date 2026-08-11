@@ -1,0 +1,16 @@
+{
+  "artifact": "004-coprime-lattice",
+  "preset": "featured",
+  "output": "out/004-coprime-lattice.svg",
+  "extent": 120,
+  "width": 2160,
+  "height": 2160,
+  "margin": 80,
+  "point_size": 0.72,
+  "encoding": "visibility",
+  "blocked_alpha": 0.10,
+  "background": "#080b14",
+  "visible_color": "#f6d35f",
+  "blocked_color": "#27324a",
+  "seed": null
+}
