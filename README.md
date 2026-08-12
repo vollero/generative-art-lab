@@ -23,6 +23,7 @@ production-management material are intentionally not stored here.
 | 002 | [Ulam Prime Spiral](artifacts/002-ulam-prime-spiral/) | Primes placed on a square integer spiral expose diagonal tracks. | [`artifact-002-v1.0.0`](https://github.com/vollero/generative-art-lab/tree/artifact-002-v1.0.0/artifacts/002-ulam-prime-spiral) |
 | 003 | [Divisor Field](artifacts/003-divisor-field/) | Divisor counts become brightness in a woven integer-grid texture. | [`artifact-003-v1.0.1`](https://github.com/vollero/generative-art-lab/tree/artifact-003-v1.0.1/artifacts/003-divisor-field) |
 | 004 | [Coprime Lattice](artifacts/004-coprime-lattice/) | Coprime coordinates identify lattice points visible from the origin. | [`artifact-004-v1.0.0`](https://github.com/vollero/generative-art-lab/tree/artifact-004-v1.0.0/artifacts/004-coprime-lattice) |
+| 005 | [Fourier Epicycles](artifacts/005-fourier-epicycles/) | Rotating complex-frequency vectors reconstruct a sampled closed curve. | Current branch |
 
 The links in the artwork column follow the current branch. Release links are
 immutable reproduction targets.

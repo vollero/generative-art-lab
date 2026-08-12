@@ -1,0 +1,18 @@
+{
+  "artifact": "005-fourier-epicycles",
+  "preset": "featured",
+  "output": "out/005-fourier-epicycles.svg",
+  "curve": "built-in-heart",
+  "samples": 256,
+  "terms": 32,
+  "time": 0.72,
+  "trace_length": 1.0,
+  "resampling": "arc-length",
+  "term_order": "amplitude",
+  "width": 2160,
+  "height": 2160,
+  "margin": 180,
+  "show_circles": true,
+  "show_source": true,
+  "seed": null
+}
