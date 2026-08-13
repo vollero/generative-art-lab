@@ -1,0 +1,17 @@
+{
+  "artifact": "006-modular-flow",
+  "preset": "featured",
+  "output": "out/006-modular-flow.svg",
+  "modulus": 63,
+  "exponent": 2,
+  "width": 2160,
+  "height": 2160,
+  "margin": 150,
+  "encoding": "depth",
+  "depth_scale": "sqrt",
+  "edge_alpha": 0.20,
+  "vertex_size": 7,
+  "highlight_start": -1,
+  "show_labels": false,
+  "seed": null
+}

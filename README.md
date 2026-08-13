@@ -24,6 +24,7 @@ production-management material are intentionally not stored here.
 | 003 | [Divisor Field](artifacts/003-divisor-field/) | Divisor counts become brightness in a woven integer-grid texture. | [`artifact-003-v1.0.1`](https://github.com/vollero/generative-art-lab/tree/artifact-003-v1.0.1/artifacts/003-divisor-field) |
 | 004 | [Coprime Lattice](artifacts/004-coprime-lattice/) | Coprime coordinates identify lattice points visible from the origin. | [`artifact-004-v1.0.0`](https://github.com/vollero/generative-art-lab/tree/artifact-004-v1.0.0/artifacts/004-coprime-lattice) |
 | 005 | [Fourier Epicycles](artifacts/005-fourier-epicycles/) | Rotating complex-frequency vectors reconstruct a sampled closed curve. | [`artifact-005-v1.0.0`](https://github.com/vollero/generative-art-lab/tree/artifact-005-v1.0.0/artifacts/005-fourier-epicycles) |
+| 006 | [Modular Flow](artifacts/006-modular-flow/) | Iterated modular powers form cycles with transient basins flowing into them. | Current branch |
 
 The links in the artwork column follow the current branch. Release links are
 immutable reproduction targets.
